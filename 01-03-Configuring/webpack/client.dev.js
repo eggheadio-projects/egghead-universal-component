@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ExtractCssChunks = require("extract-css-chunks-webpack-plugin");
 
 module.exports = {
   mode: 'development',
@@ -19,14 +20,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // you can specify a publicPath here
-              // by default it use publicPath in webpackOptions.output
-              publicPath: '../'
-            }
-          },
+          ExtractCssChunks.loader,
           "css-loader"
         ]
       }
@@ -45,12 +39,7 @@ module.exports = {
   },
   plugins: [
     // REQUIRED: We have to initialize our ExtractCssChunks plugin
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "[name].css",
-      chunkFilename: "[id].css"
-    })
+    new ExtractCssChunks()
   ],
   optimization: {
     splitChunks: {
